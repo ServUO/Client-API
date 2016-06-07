@@ -141,7 +141,6 @@ namespace ServUO_Services.Controllers
             Animations.Translate(ref id);
             Frame[] anim = Animations.GetAnimation(id, act, direction, ref hue, false, firstframe);
             List<Bitmap> bmps = anim.Select(f => f.Bitmap).ToList();
-
             return File(BuildAnimation(bmps, repeat, System.Web.HttpContext.Current), "image/gif");
         }
 
@@ -169,10 +168,12 @@ namespace ServUO_Services.Controllers
             string guid = Guid.NewGuid().ToString();
             string final = http.Server.MapPath("~/tempfiles/") + "anim" + guid + ".gif";
             AnimatedGifEncoder e = new AnimatedGifEncoder();
+            
             using (MemoryStream m = new MemoryStream())
             {
                 using (FileStream fs = new FileStream(final, FileMode.Create))
                 {
+                    
                     e.Start(m);
                     e.SetTransparent(Color.Black);
                     e.SetDelay(10);
@@ -208,7 +209,7 @@ namespace ServUO_Services.Controllers
             DirectoryInfo di = new DirectoryInfo(http.Server.MapPath("~/tempfiles/"));
             foreach (FileInfo file in di.GetFiles())
             {
-                if (file.CreationTimeUtc > DateTime.UtcNow + TimeSpan.FromMinutes(5))
+                if (file.CreationTimeUtc + TimeSpan.FromMinutes(5) < DateTime.UtcNow )
                     file.Delete();
             }
 
