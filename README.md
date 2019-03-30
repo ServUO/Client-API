@@ -1,3 +1,5 @@
+**Unmaintened**
+
 # Client-API
 A web API written in c# and ASP in order to serve Ultima Online client files.
 
